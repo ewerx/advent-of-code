@@ -2278,23 +2278,16 @@ let input = """
 1567
 """
 
-let separated: String = input
-  .replacingOccurrences(of: "\n\n", with: ",")
-let elves = separated.components(separatedBy: ",")
-var calories = [Int]()
-
-for elf in elves {
-  let elfCalories = elf.components(separatedBy: .newlines).compactMap(Int.init)
-  calories.append(elfCalories.reduce(0, +))
+let elves = input.components(separatedBy: "\n\n")
+let calories = elves.map {
+  $0.components(separatedBy: .newlines)
+    .compactMap(Int.init)
+    .reduce(0, +)
 }
 
+// 1a
 let maxCalories = calories.reduce(0, max)
 
-let sortedCalories = Array(calories.sorted().reversed())
+// 1b
+let top3Calories = Array(calories.sorted().reversed()[0..<3]).reduce(0, +)
 
-var top3Calories: Int = 0
-for i in 0..<3 {
-  top3Calories += sortedCalories[i]
-}
-
-print(top3Calories)
